@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 public class View extends Canvas {
@@ -17,6 +18,7 @@ public class View extends Canvas {
 	private JMenu fileMenu;
 	private JMenu settingsMenu;
 	private JMenuItem saveItem;
+	private JMenuItem cutOffItem;
 
 	private BufferedImage image;
 
@@ -57,11 +59,17 @@ public class View extends Canvas {
 
 		fileMenu = new JMenu("File");
 		saveItem = new JMenuItem("Save As ...");
+		saveItem.addActionListener(e -> ImageTools.saveImage(image, getWidth(), getHeight()));
 		fileMenu.add(saveItem);
-		
+
 		menuBar.add(fileMenu);
 
 		settingsMenu = new JMenu("Settings");
+		cutOffItem = new JMenuItem("Set CutOff");
+		cutOffItem.addActionListener(
+				e -> Start.getInstance().setCutOff(JOptionPane.showInputDialog("Enter the cutOff:")));
+		settingsMenu.add(cutOffItem);
+
 		menuBar.add(settingsMenu);
 
 		frame.setJMenuBar(menuBar);

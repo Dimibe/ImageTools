@@ -26,6 +26,6 @@ public class ScreenListener {
 
 	public BufferedImage getColorlessScreenShot() {
 		BufferedImage screenShot = getScreenShot();
-		return ImageTools.getBitmapImage(screenShot);
+		return ImageTools.getBitmapImage(screenShot, Start.getInstance().getCutOff());
 	}
 }
