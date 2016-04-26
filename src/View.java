@@ -67,7 +67,7 @@ public class View extends Canvas {
 		settingsMenu = new JMenu("Settings");
 		cutOffItem = new JMenuItem("Set CutOff");
 		cutOffItem.addActionListener(
-				e -> Start.getInstance().setCutOff(JOptionPane.showInputDialog("Enter the cutOff:")));
+				e -> Start.getInstance().setCutOff(JOptionPane.showInputDialog("Enter the cutOff:", Start.getInstance().getCutOff())));
 		settingsMenu.add(cutOffItem);
 
 		menuBar.add(settingsMenu);

@@ -18,7 +18,7 @@ public abstract class Start implements Runnable {
 	protected File file;
 	protected Thread t;
 
-	protected int cutOff = 155;
+	protected int cutOff = 120;
 
 	protected Start() {
 		sl = new ScreenListener();
