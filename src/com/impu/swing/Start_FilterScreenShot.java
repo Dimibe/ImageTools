@@ -1,3 +1,4 @@
+package com.impu.swing;
 import java.awt.image.BufferedImage;
 
 public class Start_FilterScreenShot extends Start {

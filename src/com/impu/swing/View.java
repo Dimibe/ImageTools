@@ -1,3 +1,4 @@
+package com.impu.swing;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -9,6 +10,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
+
+import com.impu.used.ImageTools;
 
 public class View extends Canvas {
 	private static final long serialVersionUID = 1L;

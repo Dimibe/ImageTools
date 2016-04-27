@@ -1,6 +1,9 @@
+package com.impu.swing;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.image.BufferedImage;
+
+import com.impu.used.ImageTools;
 
 public class ScreenListener {
 
