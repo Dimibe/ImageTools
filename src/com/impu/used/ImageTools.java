@@ -73,6 +73,8 @@ public class ImageTools {
 				pw.setColor(x, y, brightness >= cutOff ? Color.WHITE : Color.BLACK);
 			}
 		}
+		// System.out.println("Image Size: " + bitmapImage.getWidth() + "x" +
+		// bitmapImage.getHeight());
 		return bitmapImage;
 	}
 
