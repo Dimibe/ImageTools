@@ -23,12 +23,23 @@ public class Controller {
 	private WritableImage img;
 	private Dimension originalSize;
 	private File file;
-	private double cutOff = 0.5;
+	private double cutOff = (120.0 / 255.0);
 
 	private Controller() {
 		sl = new ScreenListener();
 
-		img = ImageTools.convertToWritableImage(new Image(getFile().toURI().toString()));
+		// Image image = new Image(getFile().toURI().toString());
+		BufferedImage image = null;
+		try {
+			image = ImageIO.read(getFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		image = ImageTools.resizeImage(image, image.getWidth(), image.getHeight());
+
+		img = ImageTools.convertToWritableImage(image);
+		System.out.println(img.getHeight());
 	}
 
 	public Dimension getOriginalSize() {
@@ -45,7 +56,8 @@ public class Controller {
 
 	// TODO: refactor
 	public WritableImage getImage() {
-		return ImageTools.getBitmapImage(img, getCutOff());
+//		return ImageTools.getBitmapImage(img, getCutOff());
+		return img;
 	}
 
 	// TODO: refactor

@@ -17,6 +17,7 @@ public class Start_Application extends Application implements Runnable {
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Fivas");
+		
 		StackPane root = new StackPane();
 		canvas = new Canvas();
 		canvas.widthProperty().bind(root.widthProperty());

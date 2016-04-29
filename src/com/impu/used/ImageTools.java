@@ -100,6 +100,20 @@ public class ImageTools {
 		return wImage;
 	}
 
+	public static WritableImage convertToWritableImage(BufferedImage image) {
+		WritableImage wImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
+		PixelWriter pixelWriter = wImage.getPixelWriter();
+
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				java.awt.Color c = new java.awt.Color(image.getRGB(x, y));
+				Color color = Color.rgb(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha() / 255.0);
+				pixelWriter.setColor(x, y, color);
+			}
+		}
+		return wImage;
+	}
+
 	public static void saveImage(BufferedImage image, int width, int height) {
 		File file = Start.getInstance().getFile();
 		if (file != null && !file.getAbsolutePath().endsWith(".png")) {
