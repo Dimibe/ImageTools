@@ -2,44 +2,43 @@
 package com.impu.fx;
 
 import java.awt.Dimension;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
-
-import com.impu.swing.ScreenListener;
 import com.impu.used.ImageTools;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
 public class Controller {
 
 	private static Controller controller;
 
-	private ScreenListener sl;
-
 	private WritableImage img;
 	private Dimension originalSize;
 	private File file;
-	private double cutOff = (120.0 / 255.0);
+	private double cutOff = (150.0 / 255.0);
 
 	private Controller() {
-		sl = new ScreenListener();
 
-		// Image image = new Image(getFile().toURI().toString());
-		BufferedImage image = null;
-		try {
-			image = ImageIO.read(getFile());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	}
 
-		image = ImageTools.resizeImage(image, image.getWidth(), image.getHeight());
-
+	public void loadWritableImage(File file) {
+		this.file = file;
+		Image image = new Image(file.toURI().toString());
 		img = ImageTools.convertToWritableImage(image);
 		System.out.println(img.getHeight());
+	}
+
+	public WritableImage getImage() {
+		return ImageTools.getBitmapImage(img, getCutOff());
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
 	}
 
 	public Dimension getOriginalSize() {
@@ -54,39 +53,14 @@ public class Controller {
 		this.cutOff = Integer.parseInt(cutOff);
 	}
 
-	// TODO: refactor
-	public WritableImage getImage() {
-		// return ImageTools.getBitmapImage(img, getCutOff());
-		return img;
-	}
-
-	// TODO: refactor
-	protected BufferedImage loadImage() {
-		file = getFile();
-		BufferedImage img = null;
-		try {
-			img = ImageIO.read(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		originalSize = new Dimension(img.getWidth(), img.getHeight());
-		return img;
-	}
-
-	// TODO: refactor
-	public File getFile() {
-		JFileChooser jfc = new JFileChooser(file);
-		int returnVal = jfc.showOpenDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			return jfc.getSelectedFile();
-		}
-		return null;
-	}
-
 	public static Controller getInstance() {
 		if (controller == null) {
 			controller = new Controller();
 		}
 		return controller;
+	}
+
+	public void loadCutOff() {
+		cutOff = Start_Application.getApplication().newCutOff(cutOff);
 	}
 }

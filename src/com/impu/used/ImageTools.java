@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.impu.swing.Start;
+import com.sun.istack.internal.NotNull;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
@@ -88,7 +89,7 @@ public class ImageTools {
 		return resizedImage;
 	}
 
-	public static WritableImage convertToWritableImage(Image image) {
+	public static WritableImage convertToWritableImage(@NotNull Image image) {
 		PixelReader pixelReader = image.getPixelReader();
 		WritableImage wImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
 		PixelWriter pixelWriter = wImage.getPixelWriter();
@@ -102,7 +103,7 @@ public class ImageTools {
 		return wImage;
 	}
 
-	public static WritableImage convertToWritableImage(BufferedImage image) {
+	public static WritableImage convertToWritableImage(@NotNull BufferedImage image) {
 		WritableImage wImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
 		PixelWriter pixelWriter = wImage.getPixelWriter();
 
@@ -116,6 +117,7 @@ public class ImageTools {
 		return wImage;
 	}
 
+	@Deprecated
 	public static void saveImage(BufferedImage image, int width, int height) {
 		File file = Start.getInstance().getFile();
 		if (file != null && !file.getAbsolutePath().endsWith(".png")) {
