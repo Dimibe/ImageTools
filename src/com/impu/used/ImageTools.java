@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import com.impu.swing.Start;
 import com.sun.istack.internal.NotNull;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -129,7 +130,15 @@ public class ImageTools {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+	}
+	
+	public static void save(WritableImage image, File file) {
+		try {
+			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+			System.out.println("Image saved under " + file.getAbsolutePath());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

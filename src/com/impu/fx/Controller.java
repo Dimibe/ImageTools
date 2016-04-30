@@ -26,19 +26,20 @@ public class Controller {
 		this.file = file;
 		Image image = new Image(file.toURI().toString());
 		img = ImageTools.convertToWritableImage(image);
-		System.out.println(img.getHeight());
+	}
+	
+
+	public void saveWritableImage(File file) {
+		this.file = file;
+		ImageTools.save(img, file);
 	}
 
 	public WritableImage getImage() {
 		return ImageTools.getBitmapImage(img, getCutOff());
 	}
-
-	public File getFile() {
-		return file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
+	
+	public void loadCutOff() {
+		cutOff = Start_Application.getApplication().newCutOff(cutOff);
 	}
 
 	public Dimension getOriginalSize() {
@@ -52,15 +53,19 @@ public class Controller {
 	public void setCutOff(String cutOff) {
 		this.cutOff = Integer.parseInt(cutOff);
 	}
+	
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
 
 	public static Controller getInstance() {
 		if (controller == null) {
 			controller = new Controller();
 		}
 		return controller;
-	}
-
-	public void loadCutOff() {
-		cutOff = Start_Application.getApplication().newCutOff(cutOff);
 	}
 }
