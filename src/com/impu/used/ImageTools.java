@@ -20,6 +20,69 @@ import javafx.scene.paint.Color;
 
 public class ImageTools {
 
+	public static WritableImage resizeImage(WritableImage image, double width, double height) {
+		BufferedImage bimg = new BufferedImage((int) image.getWidth(), (int) image.getHeight(),
+				BufferedImage.TYPE_INT_ARGB);
+		SwingFXUtils.fromFXImage(image, bimg);
+		bimg = ImageTools.resizeImage(bimg, (int) width, (int) height);
+		return SwingFXUtils.toFXImage(bimg, null);
+	}
+
+	public static WritableImage convertToWritableImage(@NotNull Image image) {
+		BufferedImage bimg = new BufferedImage((int) image.getWidth(), (int) image.getHeight(),
+				BufferedImage.TYPE_INT_ARGB);
+		SwingFXUtils.fromFXImage(image, bimg);
+		return SwingFXUtils.toFXImage(bimg, null);
+	}
+
+	public static WritableImage getBitmapImage(WritableImage image, double cutOff) {
+		if (image == null) {
+			return null;
+		}
+		WritableImage bitmapImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
+		PixelWriter pw = bitmapImage.getPixelWriter();
+		PixelReader pr = image.getPixelReader();
+		for (int x = 0; x < bitmapImage.getWidth(); x++) {
+			for (int y = 0; y < bitmapImage.getHeight(); y++) {
+				Color c = pr.getColor(x, y);
+				// double brightness = c.getBrightness();
+				double brightness = (double) (0.2126 * c.getRed() + 0.7152 * c.getGreen() + 0.0722 * c.getBlue());
+				pw.setColor(x, y, brightness >= cutOff ? Color.WHITE : Color.BLACK);
+			}
+		}
+		return bitmapImage;
+	}
+
+	// TODO: complete method
+	public static WritableImage getGreyImage(WritableImage image) {
+		if (image == null) {
+			return null;
+		}
+		WritableImage greyImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
+		// PixelWriter pw = greyImage.getPixelWriter();
+
+		return greyImage;
+	}
+
+	public static void save(WritableImage image, File file) {
+		try {
+			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+			System.out.println("Image saved under " + file.getAbsolutePath());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Deprecated
+	public static BufferedImage resizeImage(BufferedImage originalImage, int newWidth, int newHeight) {
+		BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, originalImage.getType());
+		Graphics2D g = resizedImage.createGraphics();
+		g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
+		g.dispose();
+
+		return resizedImage;
+	}
+
 	@Deprecated
 	public static BufferedImage getGreyImage(BufferedImage img) {
 		if (img == null) {
@@ -30,17 +93,6 @@ public class ImageTools {
 		g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 		g.drawImage(img, 0, 0, null);
 		g.dispose();
-		return greyImage;
-	}
-
-	// TODO: complete method
-	public static WritableImage getGreyImage(WritableImage image) {
-		if (image == null) {
-			return null;
-		}
-		WritableImage greyImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
-		PixelWriter pw = greyImage.getPixelWriter();
-
 		return greyImage;
 	}
 
@@ -61,63 +113,6 @@ public class ImageTools {
 		return bitmapImage;
 	}
 
-	public static WritableImage getBitmapImage(WritableImage image, double cutOff) {
-		if (image == null) {
-			return null;
-		}
-		WritableImage bitmapImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
-		PixelWriter pw = bitmapImage.getPixelWriter();
-		PixelReader pr = image.getPixelReader();
-		for (int x = 0; x < bitmapImage.getWidth(); x++) {
-			for (int y = 0; y < bitmapImage.getHeight(); y++) {
-				Color c = pr.getColor(x, y);
-				double brightness = c.getBrightness();
-				pw.setColor(x, y, brightness >= cutOff ? Color.WHITE : Color.BLACK);
-			}
-		}
-		// System.out.println("Image Size: " + bitmapImage.getWidth() + "x" +
-		// bitmapImage.getHeight());
-		return bitmapImage;
-	}
-
-	@Deprecated
-	public static BufferedImage resizeImage(BufferedImage originalImage, int newWidth, int newHeight) {
-		BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, originalImage.getType());
-		Graphics2D g = resizedImage.createGraphics();
-		g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
-		g.dispose();
-
-		return resizedImage;
-	}
-
-	public static WritableImage convertToWritableImage(@NotNull Image image) {
-		PixelReader pixelReader = image.getPixelReader();
-		WritableImage wImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
-		PixelWriter pixelWriter = wImage.getPixelWriter();
-
-		for (int x = 0; x < image.getWidth(); x++) {
-			for (int y = 0; y < image.getHeight(); y++) {
-				Color color = pixelReader.getColor(x, y);
-				pixelWriter.setColor(x, y, color);
-			}
-		}
-		return wImage;
-	}
-
-	public static WritableImage convertToWritableImage(@NotNull BufferedImage image) {
-		WritableImage wImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
-		PixelWriter pixelWriter = wImage.getPixelWriter();
-
-		for (int x = 0; x < image.getWidth(); x++) {
-			for (int y = 0; y < image.getHeight(); y++) {
-				java.awt.Color c = new java.awt.Color(image.getRGB(x, y));
-				Color color = Color.rgb(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha() / 255.0);
-				pixelWriter.setColor(x, y, color);
-			}
-		}
-		return wImage;
-	}
-
 	@Deprecated
 	public static void saveImage(BufferedImage image, int width, int height) {
 		File file = Start.getInstance().getFile();
@@ -131,14 +126,4 @@ public class ImageTools {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void save(WritableImage image, File file) {
-		try {
-			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
-			System.out.println("Image saved under " + file.getAbsolutePath());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 }

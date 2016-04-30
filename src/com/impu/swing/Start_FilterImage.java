@@ -11,9 +11,10 @@ public class Start_FilterImage extends Start {
 		main = this;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public BufferedImage getImage() {
-		return ImageTools.getBitmapImage(img, cutOff);
+		return ImageTools.getBitmapImage(img, getCutOff());
 	}
 
 	public static void main(String[] args) {

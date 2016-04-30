@@ -3,15 +3,8 @@ package com.impu.fx;
 import java.io.File;
 import java.util.Optional;
 
-import javax.imageio.ImageIO;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import com.impu.used.ImageTools;
-
 import javafx.application.Application;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Menu;
@@ -21,7 +14,6 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class Start_Application extends Application implements Runnable {
@@ -39,6 +31,9 @@ public class Start_Application extends Application implements Runnable {
 		primaryStage.setOnCloseRequest(e -> System.exit(1));
 
 		Scene scene = new Scene(new VBox(), 800, 600);
+		scene.widthProperty().addListener((o, ov, nv) -> Controller.getInstance().resizeImage(getWidth(), getHeight()));
+		scene.heightProperty()
+				.addListener((o, ov, nv) -> Controller.getInstance().resizeImage(getWidth(), getHeight()));
 
 		MenuBar menuBar = new MenuBar();
 		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
@@ -51,7 +46,8 @@ public class Start_Application extends Application implements Runnable {
 		menuFiles.getItems().add(openItem);
 
 		MenuItem saveItem = new MenuItem("Save Image");
-		saveItem.setOnAction(e -> Controller.getInstance().saveWritableImage(saveFile(Controller.getInstance().getFile()))); 
+		saveItem.setOnAction(
+				e -> Controller.getInstance().saveWritableImage(saveFile(Controller.getInstance().getFile())));
 		menuFiles.getItems().add(saveItem);
 
 		Menu menuEdit = new Menu("Edit");
@@ -80,7 +76,7 @@ public class Start_Application extends Application implements Runnable {
 	private void draw(GraphicsContext g) {
 		WritableImage image = Controller.getInstance().getImage();
 		if (image != null) {
-			g.drawImage(image, 0, 0, getWidth(), getHeight());
+			g.drawImage(image, 0, 0, image.getWidth(), image.getHeight());
 		}
 	}
 
@@ -109,6 +105,7 @@ public class Start_Application extends Application implements Runnable {
 	public File loadFile(File currentFile) {
 		FileChooser fc = new FileChooser();
 		fc.setInitialDirectory(currentFile == null ? null : currentFile.getParentFile());
+		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images (*.png)", "*.png", "*.jpeg", "*.jpg"));
 		fc.setTitle("Open Image");
 		return fc.showOpenDialog(primaryStage);
 	}
@@ -120,11 +117,11 @@ public class Start_Application extends Application implements Runnable {
 		return Double.parseDouble(result.get());
 	}
 
-	private double getHeight() {
+	public double getHeight() {
 		return primaryStage.getHeight();
 	}
 
-	private double getWidth() {
+	public double getWidth() {
 		return primaryStage.getWidth();
 	}
 

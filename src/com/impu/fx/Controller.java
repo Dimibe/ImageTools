@@ -13,21 +13,25 @@ public class Controller {
 
 	private static Controller controller;
 
+	private Start_Application application;
 	private WritableImage img;
+	private WritableImage originalImage;
 	private Dimension originalSize;
 	private File file;
-	private double cutOff = (150.0 / 255.0);
+	private double cutOff = (120.0 / 255.0);
 
 	private Controller() {
-
+		application = Start_Application.getApplication();
 	}
 
 	public void loadWritableImage(File file) {
 		this.file = file;
 		Image image = new Image(file.toURI().toString());
 		img = ImageTools.convertToWritableImage(image);
+		originalImage = img;
+		
+		resizeImage(application.getWidth(), application.getHeight());
 	}
-	
 
 	public void saveWritableImage(File file) {
 		this.file = file;
@@ -37,7 +41,11 @@ public class Controller {
 	public WritableImage getImage() {
 		return ImageTools.getBitmapImage(img, getCutOff());
 	}
-	
+
+	public void resizeImage(double width, double height) {
+		img = ImageTools.resizeImage(originalImage, width, height);
+	}
+
 	public void loadCutOff() {
 		cutOff = Start_Application.getApplication().newCutOff(cutOff);
 	}
@@ -53,7 +61,7 @@ public class Controller {
 	public void setCutOff(String cutOff) {
 		this.cutOff = Integer.parseInt(cutOff);
 	}
-	
+
 	public File getFile() {
 		return file;
 	}
