@@ -29,10 +29,15 @@ public class ImageTools {
 	}
 
 	public static WritableImage convertToWritableImage(@NotNull Image image) {
-		BufferedImage bimg = new BufferedImage((int) image.getWidth(), (int) image.getHeight(),
-				BufferedImage.TYPE_INT_ARGB);
-		SwingFXUtils.fromFXImage(image, bimg);
-		return SwingFXUtils.toFXImage(bimg, null);
+		PixelReader pixelReader = image.getPixelReader();
+		WritableImage wImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
+		PixelWriter pixelWriter = wImage.getPixelWriter();
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				pixelWriter.setColor(x, y, pixelReader.getColor(x, y));
+			}
+		}
+		return wImage;
 	}
 
 	public static WritableImage getBitmapImage(WritableImage image, double cutOff) {
