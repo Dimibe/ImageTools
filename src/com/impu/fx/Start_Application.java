@@ -3,6 +3,9 @@ package com.impu.fx;
 import java.io.File;
 import java.util.Optional;
 
+import com.impu.filter.BitmapFilter;
+import com.impu.filter.DefaultFilter;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -51,15 +54,25 @@ public class Start_Application extends Application implements Runnable {
 		menuFiles.getItems().add(saveItem);
 
 		Menu menuEdit = new Menu("Edit");
-		Menu subMenuShowView = new Menu("show View");
+		Menu subMenuFilter = new Menu("Set Filter");
+
+		MenuItem defaultFilterItem = new MenuItem("No Filter");
+		defaultFilterItem.setOnAction((e) -> Controller.getInstance().setFilter(new DefaultFilter()));
+		subMenuFilter.getItems().add(defaultFilterItem);
+
+		MenuItem bitmapFilterItem = new MenuItem("Bitmap Filter");
+		bitmapFilterItem.setOnAction((e) -> Controller.getInstance().setFilter(new BitmapFilter()));
+		subMenuFilter.getItems().add(bitmapFilterItem);
+
+		menuEdit.getItems().add(subMenuFilter);
+
+		Menu menuView = new Menu("View");
 
 		MenuItem cutOffItem = new MenuItem("Cut Off");
 		cutOffItem.setOnAction(e -> Controller.getInstance().loadCutOff());
-		subMenuShowView.getItems().add(cutOffItem);
+		menuView.getItems().add(cutOffItem);
 
-		menuEdit.getItems().add(subMenuShowView);
-
-		menuBar.getMenus().addAll(menuFiles, menuEdit);
+		menuBar.getMenus().addAll(menuFiles, menuEdit, menuView);
 		((VBox) scene.getRoot()).getChildren().add(menuBar);
 
 		canvas = new Canvas();
@@ -112,6 +125,7 @@ public class Start_Application extends Application implements Runnable {
 
 	public double newCutOff(double currentCutOff) {
 		TextInputDialog dialog = new TextInputDialog("" + currentCutOff);
+		dialog.initOwner(primaryStage);
 		dialog.setHeaderText("CutOff");
 		Optional<String> result = dialog.showAndWait();
 		return Double.parseDouble(result.get());

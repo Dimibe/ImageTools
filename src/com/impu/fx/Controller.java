@@ -4,6 +4,8 @@ package com.impu.fx;
 import java.awt.Dimension;
 import java.io.File;
 
+import com.impu.filter.DefaultFilter;
+import com.impu.filter.Filter;
 import com.impu.used.ImageTools;
 
 import javafx.scene.image.Image;
@@ -14,36 +16,42 @@ public class Controller {
 	private static Controller controller;
 
 	private Start_Application application;
-	private WritableImage img;
+	private WritableImage image;
 	private WritableImage originalImage;
 	private Dimension originalSize;
+	private Filter activeFilter;
 	private File file;
 	private double cutOff = (120.0 / 255.0);
 
 	private Controller() {
 		application = Start_Application.getApplication();
+		activeFilter = new DefaultFilter();
 	}
 
 	public void loadWritableImage(File file) {
 		this.file = file;
 		Image image = new Image(file.toURI().toString());
-		img = ImageTools.convertToWritableImage(image);
-		originalImage = img;
-		
+		this.image = ImageTools.convertToWritableImage(image);
+		originalImage = this.image;
+
 		resizeImage(application.getWidth(), application.getHeight());
 	}
 
 	public void saveWritableImage(File file) {
 		this.file = file;
-		ImageTools.save(img, file);
+		ImageTools.save(image, file);
+	}
+
+	public void setFilter(Filter f) {
+		activeFilter = f;
 	}
 
 	public WritableImage getImage() {
-		return ImageTools.getBitmapImage(img, getCutOff());
+		return activeFilter.getFilteredImage(image);
 	}
 
 	public void resizeImage(double width, double height) {
-		img = ImageTools.resizeImage(originalImage, width, height);
+		image = ImageTools.resizeImage(originalImage, width, height);
 	}
 
 	public void loadCutOff() {
