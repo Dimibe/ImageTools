@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.impu.filter.BitmapFilter;
 import com.impu.filter.DefaultFilter;
+import com.impu.filter.Filter;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -56,13 +57,8 @@ public class Start_Application extends Application implements Runnable {
 		Menu menuEdit = new Menu("Edit");
 		Menu subMenuFilter = new Menu("Set Filter");
 
-		MenuItem defaultFilterItem = new MenuItem("No Filter");
-		defaultFilterItem.setOnAction((e) -> Controller.getInstance().setFilter(new DefaultFilter()));
-		subMenuFilter.getItems().add(defaultFilterItem);
-
-		MenuItem bitmapFilterItem = new MenuItem("Bitmap Filter");
-		bitmapFilterItem.setOnAction((e) -> Controller.getInstance().setFilter(new BitmapFilter()));
-		subMenuFilter.getItems().add(bitmapFilterItem);
+		addFilterToMenu(subMenuFilter, "No Filter", new DefaultFilter());
+		addFilterToMenu(subMenuFilter, "Bitmap Filter", new BitmapFilter());
 
 		menuEdit.getItems().add(subMenuFilter);
 
@@ -84,6 +80,12 @@ public class Start_Application extends Application implements Runnable {
 		primaryStage.show();
 
 		new Thread(this).start();
+	}
+
+	private void addFilterToMenu(Menu menu, String name, Filter filter) {
+		MenuItem filterItem = new MenuItem(name);
+		filterItem.setOnAction((e) -> Controller.getInstance().setFilter(filter));
+		menu.getItems().add(filterItem);
 	}
 
 	private void draw(GraphicsContext g) {
