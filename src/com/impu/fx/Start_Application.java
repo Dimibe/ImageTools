@@ -18,6 +18,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -28,7 +29,7 @@ public class Start_Application extends Application implements Runnable {
 	private static Start_Application application;
 
 	private Stage primaryStage;
-	private Canvas canvas;
+	private ImageView view;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -78,10 +79,10 @@ public class Start_Application extends Application implements Runnable {
 		menuBar.getMenus().addAll(menuFiles, menuEdit, menuView);
 		((VBox) scene.getRoot()).getChildren().add(menuBar);
 
-		canvas = new Canvas();
-		canvas.widthProperty().bind(scene.widthProperty());
-		canvas.heightProperty().bind(scene.heightProperty());
-		((VBox) scene.getRoot()).getChildren().add(canvas);
+		view = new ImageView();
+		view.fitWidthProperty().bind(scene.widthProperty());
+		view.fitHeightProperty().bind(scene.heightProperty());
+		((VBox) scene.getRoot()).getChildren().add(view);
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -91,14 +92,19 @@ public class Start_Application extends Application implements Runnable {
 
 	private void addFilterToMenu(Menu menu, String name, Filter filter) {
 		CheckMenuItem filterItem = new CheckMenuItem(name);
-		filterItem.setOnAction((e) -> Controller.getInstance().setFilter(filter));
+		filterItem.setOnAction((e) -> {
+			if (filterItem.isSelected())
+				Controller.getInstance().setFilter(filter);
+			else
+				Controller.getInstance().removeFilter(filter);
+		});
 		menu.getItems().add(filterItem);
 	}
 
-	private void draw(GraphicsContext g) {
+	public void draw() {
 		WritableImage image = Controller.getInstance().getImage();
 		if (image != null) {
-			g.drawImage(image, 0, 0, image.getWidth(), image.getHeight());
+			view.setImage(image);
 		}
 	}
 
@@ -106,7 +112,7 @@ public class Start_Application extends Application implements Runnable {
 	public void run() {
 		while (true) {
 
-			draw(canvas.getGraphicsContext2D());
+			// draw();
 
 			try {
 				Thread.sleep(15);

@@ -9,6 +9,7 @@ import com.impu.filter.DefaultFilter;
 import com.impu.filter.Filter;
 import com.impu.used.ImageTools;
 
+import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
@@ -57,7 +58,8 @@ public class Controller {
 	public void removeFilter(Filter f) {
 		if (activeFilters.contains(f)) {
 			activeFilters.remove(f);
-		}
+		} 
+		applyFilterOnImage();
 	}
 
 	public void applyFilterOnImage() {
@@ -65,16 +67,21 @@ public class Controller {
 		for (Filter f : activeFilters) {
 			img = f.getFilteredImage(img);
 		}
-		this.image = img;
+		setImage(img);
 	}
 
 	public WritableImage getImage() {
 		return image;
 	}
+	
+	public void setImage(WritableImage image) {
+		this.image = image;
+		application.draw();
+	}
 
 	public void resizeImage(double width, double height) {
 		noFilterImage = ImageTools.resizeImage(originalImage, width, height);
-		image = noFilterImage;
+		setImage(image);
 		applyFilterOnImage();
 	}
 
