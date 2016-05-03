@@ -5,7 +5,11 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-public class ColorSwapFilter implements Filter {
+public class ColorSwapFilter extends FilterImpl {
+
+	public ColorSwapFilter() {
+		super("COLORSWAP");
+	}
 
 	@Override
 	public WritableImage getFilteredImage(WritableImage image) {

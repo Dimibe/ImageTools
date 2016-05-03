@@ -5,7 +5,11 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-public class InverseFilter implements Filter {
+public class InverseFilter extends FilterImpl {
+
+	public InverseFilter() {
+		super("INVERSE");
+	}
 
 	@Override
 	public WritableImage getFilteredImage(WritableImage image) {

@@ -50,7 +50,6 @@ public class ImageTools {
 		for (int x = 0; x < bitmapImage.getWidth(); x++) {
 			for (int y = 0; y < bitmapImage.getHeight(); y++) {
 				Color c = pr.getColor(x, y);
-				// double brightness = c.getBrightness();
 				double brightness = (double) (0.2126 * c.getRed() + 0.7152 * c.getGreen() + 0.0722 * c.getBlue());
 				pw.setColor(x, y, brightness >= cutOff ? Color.WHITE : Color.BLACK);
 			}

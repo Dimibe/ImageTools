@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -64,6 +65,8 @@ public class Start_Application extends Application implements Runnable {
 		addFilterToMenu(subMenuFilter, "Color Swap Filter", new ColorSwapFilter());
 		addFilterToMenu(subMenuFilter, "Inverse Filter", new InverseFilter());
 
+		((CheckMenuItem) subMenuFilter.getItems().get(0)).setSelected(true);
+
 		menuEdit.getItems().add(subMenuFilter);
 
 		Menu menuView = new Menu("View");
@@ -87,7 +90,7 @@ public class Start_Application extends Application implements Runnable {
 	}
 
 	private void addFilterToMenu(Menu menu, String name, Filter filter) {
-		MenuItem filterItem = new MenuItem(name);
+		CheckMenuItem filterItem = new CheckMenuItem(name);
 		filterItem.setOnAction((e) -> Controller.getInstance().setFilter(filter));
 		menu.getItems().add(filterItem);
 	}
@@ -124,7 +127,8 @@ public class Start_Application extends Application implements Runnable {
 	public File loadFile(File currentFile) {
 		FileChooser fc = new FileChooser();
 		fc.setInitialDirectory(currentFile == null ? new File("res") : currentFile.getParentFile());
-		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images (*.png, *.jpeg, *.jpg)", "*.png", "*.jpeg", "*.jpg"));
+		fc.getExtensionFilters()
+				.add(new FileChooser.ExtensionFilter("Images (*.png, *.jpeg, *.jpg)", "*.png", "*.jpeg", "*.jpg"));
 		fc.setTitle("Open Image");
 		return fc.showOpenDialog(primaryStage);
 	}

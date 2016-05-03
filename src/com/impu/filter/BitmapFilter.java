@@ -5,7 +5,11 @@ import com.impu.used.ImageTools;
 
 import javafx.scene.image.WritableImage;
 
-public class BitmapFilter implements Filter {
+public class BitmapFilter extends FilterImpl {
+
+	public BitmapFilter() {
+		super("BITMAP");
+	}
 
 	@Override
 	public WritableImage getFilteredImage(WritableImage image) {
