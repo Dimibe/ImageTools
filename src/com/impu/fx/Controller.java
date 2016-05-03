@@ -45,7 +45,7 @@ public class Controller {
 	public void setFilter(Filter f) {
 		activeFilter = f;
 	}
-
+	
 	public WritableImage getImage() {
 		return activeFilter.getFilteredImage(image);
 	}

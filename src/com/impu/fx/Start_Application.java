@@ -4,8 +4,10 @@ import java.io.File;
 import java.util.Optional;
 
 import com.impu.filter.BitmapFilter;
+import com.impu.filter.ColorSwapFilter;
 import com.impu.filter.DefaultFilter;
 import com.impu.filter.Filter;
+import com.impu.filter.InverseFilter;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -59,6 +61,8 @@ public class Start_Application extends Application implements Runnable {
 
 		addFilterToMenu(subMenuFilter, "No Filter", new DefaultFilter());
 		addFilterToMenu(subMenuFilter, "Bitmap Filter", new BitmapFilter());
+		addFilterToMenu(subMenuFilter, "Color Swap Filter", new ColorSwapFilter());
+		addFilterToMenu(subMenuFilter, "Inverse Filter", new InverseFilter());
 
 		menuEdit.getItems().add(subMenuFilter);
 
@@ -111,7 +115,7 @@ public class Start_Application extends Application implements Runnable {
 
 	public File saveFile(File currentFile) {
 		FileChooser fc = new FileChooser();
-		fc.setInitialDirectory(currentFile == null ? null : currentFile.getParentFile());
+		fc.setInitialDirectory(currentFile == null ? new File("res") : currentFile.getParentFile());
 		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images (*.png)", "*.png"));
 		fc.setTitle("Save Image");
 		return fc.showSaveDialog(primaryStage);
@@ -119,8 +123,8 @@ public class Start_Application extends Application implements Runnable {
 
 	public File loadFile(File currentFile) {
 		FileChooser fc = new FileChooser();
-		fc.setInitialDirectory(currentFile == null ? null : currentFile.getParentFile());
-		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images (*.png)", "*.png", "*.jpeg", "*.jpg"));
+		fc.setInitialDirectory(currentFile == null ? new File("res") : currentFile.getParentFile());
+		fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images (*.png, *.jpeg, *.jpg)", "*.png", "*.jpeg", "*.jpg"));
 		fc.setTitle("Open Image");
 		return fc.showOpenDialog(primaryStage);
 	}
