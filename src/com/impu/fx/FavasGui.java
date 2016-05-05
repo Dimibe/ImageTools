@@ -8,6 +8,7 @@ import com.impu.filter.ColorSwapFilter;
 import com.impu.filter.DefaultFilter;
 import com.impu.filter.Filter;
 import com.impu.filter.InverseFilter;
+import com.impu.filter.RainbowFilter;
 
 import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
@@ -63,6 +64,7 @@ public class FavasGui {
 		addFilterToMenu(subMenuFilter, "Bitmap Filter", new BitmapFilter());
 		addFilterToMenu(subMenuFilter, "Color Swap Filter", new ColorSwapFilter());
 		addFilterToMenu(subMenuFilter, "Inverse Filter", new InverseFilter());
+		addFilterToMenu(subMenuFilter, "Rainbow Filter", new RainbowFilter());
 
 		((CheckMenuItem) subMenuFilter.getItems().get(0)).setSelected(true);
 
