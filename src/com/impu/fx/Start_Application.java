@@ -1,5 +1,7 @@
 package com.impu.fx;
 
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -15,7 +17,9 @@ public class Start_Application extends Application {
 		gui = new FavasGui(primaryStage);
 		gui.create();
 		gui.show();
-
+		
+		// load sample image on startup
+		Controller.getInstance().loadWritableImage(new File("./res/Penguins.jpg"));
 	}
 
 	public static Start_Application getApplication() {
