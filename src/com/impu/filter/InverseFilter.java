@@ -3,7 +3,9 @@ package com.impu.filter;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 public class InverseFilter extends FilterImpl {
 
@@ -23,6 +25,11 @@ public class InverseFilter extends FilterImpl {
 			}
 		}
 		return newImage;
+	}
+
+	@Override
+	public VBox getOptionGui(Stage primaryStage) {
+		return null;
 	}
 
 }

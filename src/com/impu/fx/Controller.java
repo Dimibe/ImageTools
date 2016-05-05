@@ -16,7 +16,7 @@ public class Controller {
 
 	private static Controller controller;
 
-	private Start_Application application;
+	private FavasGui gui;
 	private WritableImage originalImage;
 	private WritableImage noFilterImage;
 	private WritableImage image;
@@ -26,7 +26,7 @@ public class Controller {
 	private double cutOff = (120.0 / 255.0);
 
 	private Controller() {
-		application = Start_Application.getApplication();
+		gui = FavasGui.getInstance();
 		activeFilters = new ArrayList<>();
 		activeFilters.add(new DefaultFilter());
 	}
@@ -38,7 +38,7 @@ public class Controller {
 		originalImage = this.image;
 		noFilterImage = this.image;
 
-		resizeImage(application.getWidth(), application.getHeight());
+		resizeImage(gui.getWidth(), gui.getHeight());
 	}
 
 	public void saveWritableImage(File file) {
@@ -75,7 +75,7 @@ public class Controller {
 	
 	public void setImage(WritableImage image) {
 		this.image = image;
-		application.draw();
+		gui.setImageToView();
 	}
 
 	public void resizeImage(double width, double height) {
@@ -84,10 +84,10 @@ public class Controller {
 		applyFilterOnImage();
 	}
 
-	public void loadCutOff() {
-		cutOff = Start_Application.getApplication().newCutOff(cutOff);
-		applyFilterOnImage();
-	}
+	// public void loadCutOff() {
+	// cutOff = Start_Application.getApplication().newCutOff(cutOff);
+	// applyFilterOnImage();
+	// }
 
 	public Dimension getOriginalSize() {
 		return originalSize;
