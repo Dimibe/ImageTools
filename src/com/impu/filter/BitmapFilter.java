@@ -25,12 +25,12 @@ public class BitmapFilter extends FilterImpl {
 		Slider slider = new Slider(0, 1, cutOff);
 		slider.setShowTickLabels(true);
 		slider.setShowTickMarks(true);
-		slider.setMajorTickUnit(.1);
+		slider.setMajorTickUnit(0.1);
 		slider.setBlockIncrement(0.1);
 		slider.setMinorTickCount(5);
 		slider.valueProperty().addListener((o, ov, nv) -> {
 			cutOff = (double) nv;
-			super.imageChanged();
+			imageChanged();
 		});
 		box.getChildren().add(slider);
 		return box;
