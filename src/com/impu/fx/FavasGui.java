@@ -9,6 +9,7 @@ import com.impu.filter.DefaultFilter;
 import com.impu.filter.Filter;
 import com.impu.filter.InverseFilter;
 import com.impu.filter.RainbowFilter;
+import com.impu.used.Const;
 
 import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
@@ -34,10 +35,13 @@ public class FavasGui {
 	}
 
 	public void create() {
-		primaryStage.setTitle("Fivas");
+		primaryStage.setTitle(Const.TITLE);
 		primaryStage.setOnCloseRequest(e -> System.exit(1));
 
-		Scene scene = new Scene(new VBox(), 800, 600);
+		primaryStage.setMinWidth(Const.MIN_WIDTH);
+		primaryStage.setMinHeight(Const.MIN_HEIGHT);
+
+		Scene scene = new Scene(new VBox(), Const.INIT_WIDTH, Const.INIT_HEIGHT);
 		scene.widthProperty().addListener((o, ov, nv) -> Controller.getInstance().resizeImage(getWidth(), getHeight()));
 		scene.heightProperty()
 				.addListener((o, ov, nv) -> Controller.getInstance().resizeImage(getWidth(), getHeight()));
