@@ -1,11 +1,14 @@
 package com.impu.filter;
 
+import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 public class RainbowFilter extends FilterImpl {
 
@@ -38,6 +41,14 @@ public class RainbowFilter extends FilterImpl {
 	@Override
 	public VBox getOptionBox() {
 		VBox box = new VBox();
+		box.setPadding(new Insets(5, 10, 5, 10));
+
+		Label vBoxHeader = new Label("Rainbow Filter: ");
+		vBoxHeader.setFont(new Font(16));
+		box.getChildren().add(vBoxHeader);
+
+		Label cyclesHeader = new Label("Cycles: ");
+		box.getChildren().add(cyclesHeader);
 		Slider sliderCycles = new Slider(1, 5, cycles);
 		sliderCycles.setShowTickLabels(true);
 		sliderCycles.setShowTickMarks(true);
@@ -50,6 +61,8 @@ public class RainbowFilter extends FilterImpl {
 		});
 		box.getChildren().add(sliderCycles);
 
+		Label offsetHeader = new Label("Offset: ");
+		box.getChildren().add(offsetHeader);
 		Slider sliderOffset = new Slider(0, 50, initOffset);
 		sliderOffset.setShowTickLabels(true);
 		sliderOffset.setShowTickMarks(true);
