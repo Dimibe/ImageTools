@@ -1,16 +1,14 @@
 package com.impu.filter;
 
-import java.util.Optional;
-
-import com.impu.fx.Controller;
 import com.impu.used.ImageTools;
 
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Slider;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class BitmapFilter extends FilterImpl {
+
+	private double cutOff = 0.5;
 
 	public BitmapFilter() {
 		super("BITMAP");
@@ -18,21 +16,24 @@ public class BitmapFilter extends FilterImpl {
 
 	@Override
 	public WritableImage getFilteredImage(WritableImage image) {
-		return ImageTools.getBitmapImage(image, Controller.getInstance().getCutOff());
-	}
-	
-	
-	public double newCutOff(Stage stage, double currentCutOff) {
-		TextInputDialog dialog = new TextInputDialog("" + currentCutOff);
-		dialog.initOwner(stage);
-		dialog.setHeaderText("CutOff");
-		Optional<String> result = dialog.showAndWait();
-		return Double.parseDouble(result.get());
+		return ImageTools.getBitmapImage(image, cutOff);
 	}
 
 	@Override
-	public VBox getOptionGui(Stage primaryStage) {
-		return null;
+	public VBox getOptionBox() {
+		VBox box = new VBox();
+		Slider slider = new Slider(0, 1, cutOff);
+		slider.setShowTickLabels(true);
+		slider.setShowTickMarks(true);
+		slider.setMajorTickUnit(.1);
+		slider.setBlockIncrement(0.1);
+		slider.setMinorTickCount(5);
+		slider.valueProperty().addListener((o, ov, nv) -> {
+			cutOff = (double) nv;
+			super.imageChanged();
+		});
+		box.getChildren().add(slider);
+		return box;
 	}
 
 }

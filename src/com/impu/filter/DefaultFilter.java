@@ -2,7 +2,6 @@ package com.impu.filter;
 
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class DefaultFilter extends FilterImpl {
 
@@ -16,7 +15,7 @@ public class DefaultFilter extends FilterImpl {
 	}
 
 	@Override
-	public VBox getOptionGui(Stage primaryStage) {
+	public VBox getOptionBox() {
 		return null;
 	}
 

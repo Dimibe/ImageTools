@@ -29,6 +29,9 @@ public class ImageTools {
 	}
 
 	public static WritableImage convertToWritableImage(@NotNull Image image) {
+		if (image == null) {
+			return null;
+		}
 		PixelReader pixelReader = image.getPixelReader();
 		WritableImage wImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
 		PixelWriter pixelWriter = wImage.getPixelWriter();
@@ -49,9 +52,10 @@ public class ImageTools {
 		PixelReader pr = image.getPixelReader();
 		for (int x = 0; x < bitmapImage.getWidth(); x++) {
 			for (int y = 0; y < bitmapImage.getHeight(); y++) {
-				Color c = pr.getColor(x, y);
-				double brightness = (double) (0.2126 * c.getRed() + 0.7152 * c.getGreen() + 0.0722 * c.getBlue());
-				pw.setColor(x, y, brightness >= cutOff ? Color.WHITE : Color.BLACK);
+				// Color c = pr.getColor(x, y);
+				// double brightness = (double) (0.2126 * c.getRed() + 0.7152 *
+				// c.getGreen() + 0.0722 * c.getBlue());
+				pw.setColor(x, y, pr.getColor(x, y).getBrightness() > cutOff ? Color.WHITE : Color.BLACK);
 			}
 		}
 		return bitmapImage;

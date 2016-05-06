@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.impu.filter.DefaultFilter;
 import com.impu.filter.Filter;
+import com.impu.filter.FilterImpl;
 import com.impu.used.ImageTools;
 
 import javafx.scene.image.Image;
@@ -21,9 +22,8 @@ public class Controller {
 	private WritableImage noFilterImage;
 	private WritableImage image;
 	private Dimension originalSize;
-	private ArrayList<Filter> activeFilters;
+	private ArrayList<FilterImpl> activeFilters;
 	private File file;
-	private double cutOff = (120.0 / 255.0);
 
 	private Controller() {
 		gui = FavasGui.getInstance();
@@ -46,18 +46,18 @@ public class Controller {
 		ImageTools.save(image, file);
 	}
 
-	public void setFilter(Filter f) {
+	public void setFilter(FilterImpl f) {
 		if (activeFilters.contains(f)) {
 			return;
 		}
 		activeFilters.add(f);
 		applyFilterOnImage();
 	}
-	
+
 	public void removeFilter(Filter f) {
 		if (activeFilters.contains(f)) {
 			activeFilters.remove(f);
-		} 
+		}
 		applyFilterOnImage();
 	}
 
@@ -72,10 +72,10 @@ public class Controller {
 	public WritableImage getImage() {
 		return image;
 	}
-	
+
 	public void setImage(WritableImage image) {
 		this.image = image;
-		gui.setImageToView();
+		gui.setImageToView(this.image);
 	}
 
 	public void resizeImage(double width, double height) {
@@ -84,22 +84,8 @@ public class Controller {
 		applyFilterOnImage();
 	}
 
-	// public void loadCutOff() {
-	// cutOff = Start_Application.getApplication().newCutOff(cutOff);
-	// applyFilterOnImage();
-	// }
-
 	public Dimension getOriginalSize() {
 		return originalSize;
-	}
-
-	public double getCutOff() {
-		return cutOff;
-	}
-
-	public void setCutOff(String cutOff) {
-		this.cutOff = Integer.parseInt(cutOff);
-		applyFilterOnImage();
 	}
 
 	public File getFile() {
@@ -115,5 +101,9 @@ public class Controller {
 			controller = new Controller();
 		}
 		return controller;
+	}
+
+	public ArrayList<FilterImpl> getActiveFilters() {
+		return activeFilters;
 	}
 }

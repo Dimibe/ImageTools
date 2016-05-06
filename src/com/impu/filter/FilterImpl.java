@@ -1,7 +1,9 @@
 package com.impu.filter;
 
+import com.impu.fx.Controller;
+
+import javafx.application.Platform;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public abstract class FilterImpl implements Filter {
 
@@ -16,6 +18,10 @@ public abstract class FilterImpl implements Filter {
 		return this.name.equals(((FilterImpl) obj).name);
 	}
 
-	public abstract VBox getOptionGui(Stage primaryStage);
+	public abstract VBox getOptionBox();
+
+	protected final void imageChanged() {
+		Platform.runLater(() -> Controller.getInstance().applyFilterOnImage());
+	}
 
 }

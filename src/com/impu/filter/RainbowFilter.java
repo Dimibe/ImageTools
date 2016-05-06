@@ -5,7 +5,6 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 public class RainbowFilter extends FilterImpl {
 
@@ -35,7 +34,7 @@ public class RainbowFilter extends FilterImpl {
 	}
 
 	@Override
-	public VBox getOptionGui(Stage primaryStage) {
+	public VBox getOptionBox() {
 		return null;
 	}
 

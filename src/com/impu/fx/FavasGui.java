@@ -6,18 +6,20 @@ import com.impu.exception.NoInstanceException;
 import com.impu.filter.BitmapFilter;
 import com.impu.filter.ColorSwapFilter;
 import com.impu.filter.DefaultFilter;
-import com.impu.filter.Filter;
+import com.impu.filter.FilterImpl;
 import com.impu.filter.InverseFilter;
 import com.impu.filter.RainbowFilter;
 import com.impu.used.Const;
 
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -27,7 +29,10 @@ public class FavasGui {
 	private static FavasGui gui;
 
 	private Stage primaryStage;
+	private BorderPane borderPane;
 	private ImageView view;
+	private MenuBar menuBar;
+	private VBox optionsMenu;
 
 	public FavasGui(Stage primaryStage) {
 		gui = this;
@@ -37,16 +42,32 @@ public class FavasGui {
 	public void create() {
 		primaryStage.setTitle(Const.TITLE);
 		primaryStage.setOnCloseRequest(e -> System.exit(1));
-
 		primaryStage.setMinWidth(Const.MIN_WIDTH);
 		primaryStage.setMinHeight(Const.MIN_HEIGHT);
 
-		Scene scene = new Scene(new VBox(), Const.INIT_WIDTH, Const.INIT_HEIGHT);
+		borderPane = new BorderPane();
+		Scene scene = new Scene(borderPane, Const.INIT_WIDTH, Const.INIT_HEIGHT);
+
+		createMenuBar();
+		createOptionsMenu();
+
+		view = new ImageView();
+		view.fitWidthProperty().bind(scene.widthProperty().subtract(optionsMenu.widthProperty()));
+		view.fitHeightProperty().bind(scene.heightProperty().subtract(menuBar.heightProperty()));
+
+		borderPane.setTop(menuBar);
+		borderPane.setCenter(view);
+		borderPane.setRight(optionsMenu);
+
 		scene.widthProperty().addListener((o, ov, nv) -> Controller.getInstance().resizeImage(getWidth(), getHeight()));
 		scene.heightProperty()
 				.addListener((o, ov, nv) -> Controller.getInstance().resizeImage(getWidth(), getHeight()));
 
-		MenuBar menuBar = new MenuBar();
+		primaryStage.setScene(scene);
+	}
+
+	private MenuBar createMenuBar() {
+		menuBar = new MenuBar();
 		menuBar.prefWidthProperty().bind(primaryStage.widthProperty());
 
 		Menu menuFiles = new Menu("File");
@@ -76,24 +97,39 @@ public class FavasGui {
 
 		Menu menuView = new Menu("View");
 
-		// MenuItem cutOffItem = new MenuItem("Cut Off");
-		// cutOffItem.setOnAction(e -> Controller.getInstance().loadCutOff());
-		// menuView.getItems().add(cutOffItem);
-
 		menuBar.getMenus().addAll(menuFiles, menuEdit, menuView);
-		((VBox) scene.getRoot()).getChildren().add(menuBar);
 
-		view = new ImageView();
-		view.fitWidthProperty().bind(scene.widthProperty());
-		view.fitHeightProperty().bind(scene.heightProperty());
-		((VBox) scene.getRoot()).getChildren().add(view);
-
-		primaryStage.setScene(scene);
-
+		return menuBar;
 	}
 
 	public void show() {
 		primaryStage.show();
+	}
+
+	public void createOptionsMenu() {
+		optionsMenu = new VBox();
+		optionsMenu.setPrefWidth(Const.OPTIONS_MENU_WIDTH);
+		optionsMenu.setPrefHeight(Const.INIT_HEIGHT);
+	}
+
+	public void disposeOptionsMenu() {
+		optionsMenu.setPrefWidth(0);
+	}
+
+	public void updateOptionsMenu() {
+		Platform.runLater(() -> {
+			if (optionsMenu == null || optionsMenu.getChildren() == null) {
+				return;
+			}
+			optionsMenu.getChildren().clear();
+			for (FilterImpl f : Controller.getInstance().getActiveFilters()) {
+				VBox box = f.getOptionBox();
+				if (box == null) {
+					continue;
+				}
+				optionsMenu.getChildren().add(box);
+			}
+		});
 	}
 
 	public File saveFile(File currentFile) {
@@ -113,7 +149,7 @@ public class FavasGui {
 		return fc.showOpenDialog(primaryStage);
 	}
 
-	private void addFilterToMenu(Menu menu, String name, Filter filter) {
+	private void addFilterToMenu(Menu menu, String name, FilterImpl filter) {
 		CheckMenuItem filterItem = new CheckMenuItem(name);
 		filterItem.setOnAction((e) -> {
 			if (filterItem.isSelected()) {
@@ -121,23 +157,23 @@ public class FavasGui {
 			} else {
 				Controller.getInstance().removeFilter(filter);
 			}
+			Platform.runLater(() -> updateOptionsMenu());
 		});
 		menu.getItems().add(filterItem);
 	}
 
-	public void setImageToView() {
-		WritableImage image = Controller.getInstance().getImage();
+	public void setImageToView(Image image) {
 		if (image != null) {
 			view.setImage(image);
 		}
 	}
 
 	public double getHeight() {
-		return primaryStage.getHeight();
+		return view.getFitHeight();
 	}
 
 	public double getWidth() {
-		return primaryStage.getWidth();
+		return view.getFitWidth();
 	}
 
 	public static FavasGui getInstance() {
