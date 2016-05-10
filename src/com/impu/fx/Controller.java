@@ -19,7 +19,7 @@ public class Controller {
 
 	private FavasGui gui;
 	private WritableImage originalImage;
-	private WritableImage noFilterImage;
+	private WritableImage filteredImage;
 	private WritableImage image;
 	private Dimension originalSize;
 	private ArrayList<FilterImpl> activeFilters;
@@ -36,7 +36,7 @@ public class Controller {
 		Image image = new Image(file.toURI().toString());
 		this.image = ImageTools.convertToWritableImage(image);
 		originalImage = this.image;
-		noFilterImage = this.image;
+		filteredImage = this.image;
 
 		resizeImage(gui.getWidth(), gui.getHeight());
 	}
@@ -62,15 +62,16 @@ public class Controller {
 	}
 
 	public void applyFilterOnImage() {
-		WritableImage img = this.noFilterImage;
+		WritableImage img = this.originalImage;
 		for (FilterImpl f : activeFilters) {
 			img = f.getFilteredImage(img);
 		}
 		setImage(img);
 	}
 
-	public WritableImage getImage() {
-		return image;
+	public void resizeImage(double width, double height) {
+		setImage(ImageTools.resizeImage(filteredImage, width, height));
+		applyFilterOnImage();
 	}
 
 	public void setImage(WritableImage image) {
@@ -78,10 +79,8 @@ public class Controller {
 		gui.setImageToView(this.image);
 	}
 
-	public void resizeImage(double width, double height) {
-		noFilterImage = ImageTools.resizeImage(originalImage, width, height);
-		setImage(image);
-		applyFilterOnImage();
+	public WritableImage getImage() {
+		return image;
 	}
 
 	public Dimension getOriginalSize() {
