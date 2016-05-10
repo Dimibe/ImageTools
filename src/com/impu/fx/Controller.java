@@ -62,16 +62,15 @@ public class Controller {
 	}
 
 	public void applyFilterOnImage() {
-		WritableImage img = this.originalImage;
+		filteredImage = this.originalImage;
 		for (FilterImpl f : activeFilters) {
-			img = f.getFilteredImage(img);
+			filteredImage = f.getFilteredImage(filteredImage);
 		}
-		setImage(img);
+		setImage(filteredImage);
 	}
 
 	public void resizeImage(double width, double height) {
 		setImage(ImageTools.resizeImage(filteredImage, width, height));
-		applyFilterOnImage();
 	}
 
 	public void setImage(WritableImage image) {
