@@ -57,6 +57,11 @@ public class RainbowFilter extends FilterImpl {
 			cycles = (double) nv;
 			imageChanged();
 		});
+		sliderCycles.valueChangingProperty().addListener((o, ov, nv) -> {
+			if (ov && !nv) {
+				focusImage();
+			}
+		});
 		box.getChildren().add(sliderCycles);
 
 		Label offsetHeader = new Label("Offset: ");
@@ -70,6 +75,11 @@ public class RainbowFilter extends FilterImpl {
 		sliderOffset.valueProperty().addListener((o, ov, nv) -> {
 			initOffset = (double) nv;
 			imageChanged();
+		});
+		sliderOffset.valueChangingProperty().addListener((o, ov, nv) -> {
+			if (ov && !nv) {
+				focusImage();
+			}
 		});
 		box.getChildren().add(sliderOffset);
 		return box;

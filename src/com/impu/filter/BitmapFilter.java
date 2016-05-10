@@ -41,6 +41,12 @@ public class BitmapFilter extends FilterImpl {
 			cutOff = (double) nv;
 			imageChanged();
 		});
+
+		slider.valueChangingProperty().addListener((o, ov, nv) -> {
+			if (ov && !nv) {
+				focusImage();
+			}
+		});
 		box.getChildren().add(slider);
 		return box;
 	}

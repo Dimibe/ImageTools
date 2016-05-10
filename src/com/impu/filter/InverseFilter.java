@@ -11,8 +11,7 @@ public class InverseFilter extends FilterImpl {
 
 	@Override
 	public Color getPixelColor(Color color) {
-		return new Color(Color.RED.getRed() - color.getRed(), Color.GREEN.getGreen() - color.getGreen(),
-				Color.BLUE.getBlue() - color.getBlue(), color.getOpacity());
+		return new Color(1.0 - color.getRed(), 1.0 - color.getGreen(), 1.0 - color.getBlue(), color.getOpacity());
 	}
 
 	@Override
