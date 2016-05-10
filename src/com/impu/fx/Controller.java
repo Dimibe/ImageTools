@@ -32,14 +32,14 @@ public class Controller {
 		activeFilters.add(new DefaultFilter());
 	}
 
-	public void loadWritableImage(File file) {
+	public void loadImage(File file) {
 		this.file = file;
 		Image image = new Image(file.toURI().toString());
 		this.image = ImageTools.convertToWritableImage(image);
 		originalImage = this.image;
 		filteredImage = this.image;
-
 		resizeImage(gui.getWidth(), gui.getHeight());
+		removeAllFilter();
 	}
 
 	public void saveWritableImage(File file) {
@@ -60,6 +60,11 @@ public class Controller {
 			activeFilters.remove(f);
 		}
 		applyFilterOnImage();
+	}
+
+	private void removeAllFilter() {
+		activeFilters.clear();
+		gui.deselectAllFilters();
 	}
 
 	public void applyFilterOnImage() {

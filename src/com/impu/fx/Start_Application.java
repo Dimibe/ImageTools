@@ -19,7 +19,7 @@ public class Start_Application extends Application {
 		gui.show();
 		
 		// load sample image on startup
-		Controller.getInstance().loadWritableImage(new File("./res/Penguins.jpg"));
+		Controller.getInstance().loadImage(new File("./res/Penguins.jpg"));
 	}
 
 	public static Start_Application getApplication() {

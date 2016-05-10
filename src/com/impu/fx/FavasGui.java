@@ -6,7 +6,6 @@ import com.impu.exception.NoInstanceException;
 import com.impu.filter.BitmapFilter;
 import com.impu.filter.ColorSwapFilter;
 import com.impu.filter.ComicFilter;
-import com.impu.filter.DefaultFilter;
 import com.impu.filter.FilterImpl;
 import com.impu.filter.InverseFilter;
 import com.impu.filter.RainbowFilter;
@@ -33,6 +32,7 @@ public class FavasGui {
 	private BorderPane borderPane;
 	private ImageView view;
 	private MenuBar menuBar;
+	private Menu subMenuFilter;
 	private VBox optionsMenu;
 
 	public FavasGui(Stage primaryStage) {
@@ -74,8 +74,7 @@ public class FavasGui {
 		Menu menuFiles = new Menu("File");
 
 		MenuItem openItem = new MenuItem("Open Image");
-		openItem.setOnAction(
-				e -> Controller.getInstance().loadWritableImage(loadFile(Controller.getInstance().getFile())));
+		openItem.setOnAction(e -> Controller.getInstance().loadImage(loadFile(Controller.getInstance().getFile())));
 		menuFiles.getItems().add(openItem);
 
 		MenuItem saveItem = new MenuItem("Save Image");
@@ -84,9 +83,11 @@ public class FavasGui {
 		menuFiles.getItems().add(saveItem);
 
 		Menu menuEdit = new Menu("Edit");
-		Menu subMenuFilter = new Menu("Set Filter");
+		subMenuFilter = new Menu("Set Filter");
 
-		addFilterToMenu(subMenuFilter, "No Filter", new DefaultFilter());
+		// addFilterToMenu(subMenuFilter, "No Filter", new DefaultFilter());
+
+		// Adding Filters to Menu
 		addFilterToMenu(subMenuFilter, "Bitmap Filter", new BitmapFilter());
 		addFilterToMenu(subMenuFilter, "Color Swap Filter", new ColorSwapFilter());
 		addFilterToMenu(subMenuFilter, "Inverse Filter", new InverseFilter());
@@ -162,6 +163,14 @@ public class FavasGui {
 			Platform.runLater(() -> updateOptionsMenu());
 		});
 		menu.getItems().add(filterItem);
+	}
+
+	public void deselectAllFilters() {
+		for (MenuItem item : subMenuFilter.getItems()) {
+			if (item instanceof CheckMenuItem) {
+				((CheckMenuItem) item).setSelected(false);
+			}
+		}
 	}
 
 	public void setImageToView(Image image) {
