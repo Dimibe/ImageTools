@@ -82,7 +82,7 @@ public class ImageTools {
 	}
 
 	public static BufferedImage resizeImage(BufferedImage originalImage, int newWidth, int newHeight) {
-		BufferedImage resizedImage = new BufferedImage(newWidth < 0 ? 0 : newWidth, newHeight < 0 ? 0 : newHeight,
+		BufferedImage resizedImage = new BufferedImage(newWidth < 0 ? 1 : newWidth, newHeight < 0 ? 1 : newHeight,
 				originalImage.getType());
 		Graphics2D g = resizedImage.createGraphics();
 		g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);

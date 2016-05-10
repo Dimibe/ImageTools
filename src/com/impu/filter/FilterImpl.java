@@ -26,6 +26,10 @@ public abstract class FilterImpl implements Filter {
 	public abstract VBox getOptionBox();
 
 	protected final void imageChanged() {
+		Platform.runLater(() -> Controller.getInstance().applyFilterOnSmallImage());
+	}
+
+	public void focusImage() {
 		Platform.runLater(() -> Controller.getInstance().applyFilterOnImage());
 	}
 

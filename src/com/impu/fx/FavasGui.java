@@ -5,6 +5,7 @@ import java.io.File;
 import com.impu.exception.NoInstanceException;
 import com.impu.filter.BitmapFilter;
 import com.impu.filter.ColorSwapFilter;
+import com.impu.filter.ComicFilter;
 import com.impu.filter.DefaultFilter;
 import com.impu.filter.FilterImpl;
 import com.impu.filter.InverseFilter;
@@ -90,6 +91,7 @@ public class FavasGui {
 		addFilterToMenu(subMenuFilter, "Color Swap Filter", new ColorSwapFilter());
 		addFilterToMenu(subMenuFilter, "Inverse Filter", new InverseFilter());
 		addFilterToMenu(subMenuFilter, "Rainbow Filter", new RainbowFilter());
+		addFilterToMenu(subMenuFilter, "Comic Filter", new ComicFilter());
 
 		((CheckMenuItem) subMenuFilter.getItems().get(0)).setSelected(true);
 

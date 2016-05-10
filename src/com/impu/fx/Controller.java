@@ -20,6 +20,7 @@ public class Controller {
 	private FavasGui gui;
 	private WritableImage originalImage;
 	private WritableImage filteredImage;
+	private WritableImage smallImage;
 	private WritableImage image;
 	private Dimension originalSize;
 	private ArrayList<FilterImpl> activeFilters;
@@ -67,6 +68,14 @@ public class Controller {
 			filteredImage = f.getFilteredImage(filteredImage);
 		}
 		setImage(filteredImage);
+	}
+
+	public void applyFilterOnSmallImage() {
+		smallImage = ImageTools.resizeImage(originalImage, 200, 200);
+		for (FilterImpl f : activeFilters) {
+			smallImage = f.getFilteredImage(smallImage);
+		}
+		setImage(smallImage);
 	}
 
 	public void resizeImage(double width, double height) {
