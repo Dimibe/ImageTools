@@ -63,7 +63,7 @@ public class Controller {
 
 	public void applyFilterOnImage() {
 		WritableImage img = this.noFilterImage;
-		for (Filter f : activeFilters) {
+		for (FilterImpl f : activeFilters) {
 			img = f.getFilteredImage(img);
 		}
 		setImage(img);

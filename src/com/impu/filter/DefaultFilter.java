@@ -1,7 +1,7 @@
 package com.impu.filter;
 
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 public class DefaultFilter extends FilterImpl {
 
@@ -10,8 +10,8 @@ public class DefaultFilter extends FilterImpl {
 	}
 
 	@Override
-	public WritableImage getFilteredImage(WritableImage image) {
-		return image;
+	public Color getPixelColor(Color color) {
+		return color;
 	}
 
 	@Override

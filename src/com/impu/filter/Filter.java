@@ -1,10 +1,10 @@
 package com.impu.filter;
 
-import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 
 @FunctionalInterface
 public interface Filter {
 
-	public WritableImage getFilteredImage(WritableImage image);
+	public Color getPixelColor(Color color);
 
 }

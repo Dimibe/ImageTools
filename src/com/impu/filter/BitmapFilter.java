@@ -1,12 +1,10 @@
 package com.impu.filter;
 
-import com.impu.used.ImageTools;
-
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class BitmapFilter extends FilterImpl {
@@ -18,8 +16,8 @@ public class BitmapFilter extends FilterImpl {
 	}
 
 	@Override
-	public WritableImage getFilteredImage(WritableImage image) {
-		return ImageTools.getBitmapImage(image, cutOff);
+	public Color getPixelColor(Color color) {
+		return color.getBrightness() > cutOff ? Color.WHITE : Color.BLACK;
 	}
 
 	@Override

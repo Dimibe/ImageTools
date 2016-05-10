@@ -3,9 +3,6 @@ package com.impu.filter;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -14,28 +11,29 @@ public class RainbowFilter extends FilterImpl {
 
 	private double cycles = 1;
 	private double initOffset = 0;
+	private double offset = initOffset;
+	private double step;
 
 	public RainbowFilter() {
 		super("RAINBOW");
 	}
 
 	@Override
-	public WritableImage getFilteredImage(WritableImage image) {
-		final double step = 360 * cycles / (image.getWidth() * image.getHeight());
-		double offset = initOffset;
-		WritableImage newImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
-		PixelReader pr = image.getPixelReader();
-		PixelWriter pw = newImage.getPixelWriter();
-		for (int i = 0; i < image.getWidth(); i++) {
-			for (int j = 0; j < image.getHeight(); j++) {
+	public void pre() {
+		step = 360 * cycles / (image.getWidth() * image.getHeight());
+		offset = initOffset;
+	}
 
-				Color c = pr.getColor(i, j);
-				pw.setColor(i, j, c.deriveColor(offset, 1, 1, 1));
-				offset += step;
+	@Override
+	public Color getPixelColor(Color color) {
+		Color c = color.deriveColor(offset, 1, 1, 1);
+		offset += step;
+		return c;
+	}
 
-			}
-		}
-		return newImage;
+	@Override
+	public void post() {
+		offset = initOffset;
 	}
 
 	@Override
@@ -76,5 +74,4 @@ public class RainbowFilter extends FilterImpl {
 		box.getChildren().add(sliderOffset);
 		return box;
 	}
-
 }
