@@ -171,6 +171,7 @@ public class FavasGui {
 				((CheckMenuItem) item).setSelected(false);
 			}
 		}
+		gui.updateOptionsMenu();
 	}
 
 	public void setImageToView(Image image) {
