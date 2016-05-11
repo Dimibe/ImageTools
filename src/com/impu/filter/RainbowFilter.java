@@ -3,8 +3,10 @@ package com.impu.filter;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 public class RainbowFilter extends FilterImpl {
@@ -19,21 +21,19 @@ public class RainbowFilter extends FilterImpl {
 	}
 
 	@Override
-	public void pre() {
+	public WritableImage getFilteredImage(WritableImage image) {
 		step = 360 * cycles / (image.getWidth() * image.getHeight());
 		offset = initOffset;
-	}
-
-	@Override
-	public Color getPixelColor(Color color) {
-		Color c = color.deriveColor(offset, 1, 1, 1);
-		offset += step;
-		return c;
-	}
-
-	@Override
-	public void post() {
-		offset = initOffset;
+		WritableImage filteredImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
+		PixelWriter pw = filteredImage.getPixelWriter();
+		PixelReader pr = image.getPixelReader();
+		for (int x = 0; x < filteredImage.getWidth(); x++) {
+			for (int y = 0; y < filteredImage.getHeight(); y++) {
+				pw.setColor(x, y, pr.getColor(x, y).deriveColor(offset, 1, 1, 1));
+				offset += step;
+			}
+		}
+		return filteredImage;
 	}
 
 	@Override

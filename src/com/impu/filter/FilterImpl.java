@@ -7,6 +7,7 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 public abstract class FilterImpl implements Filter {
 
@@ -33,9 +34,8 @@ public abstract class FilterImpl implements Filter {
 		Platform.runLater(() -> Controller.getInstance().applyFilterOnImage());
 	}
 
-	public final WritableImage getFilteredImage(WritableImage image) {
+	public WritableImage getFilteredImage(WritableImage image) {
 		this.image = image;
-		pre();
 		WritableImage filteredImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
 		PixelWriter pw = filteredImage.getPixelWriter();
 		PixelReader pr = image.getPixelReader();
@@ -44,16 +44,10 @@ public abstract class FilterImpl implements Filter {
 				pw.setColor(x, y, getPixelColor(pr.getColor(x, y)));
 			}
 		}
-		post();
 		return filteredImage;
 	}
 
-	public void pre() {
-		return;
+	public Color getPixelColor(Color color) {
+		return color;
 	}
-
-	public void post() {
-		return;
-	}
-
 }
